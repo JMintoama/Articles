@@ -1,0 +1,52 @@
+{% extends "base.html" %}
+
+{% block content %}
+   <div class="container">
+        <div class="row">
+            <div class="col-md-8">
+                <h1 class="text-md-3 mt-2">  Detail article</h1>
+                {% if article.image == "http://default" and article.id < 35 %}
+                <img src="https://via.assets.so/game.jpg?w=1280&h=720
+                " alt="" style="max-width: 600px;">
+                {% elif article.image == "http://default" and article.id > 34 %}
+                <img src="https://lipsum.app/random/1600x900"
+                alt="Image de l'article" style="max-width: 600px;"/>
+                {% else %}
+                <img src="{{article.image.url}}" alt="" style="max-width: 600px; max-height: 1000px;">
+                {% endif %}
+                <div class="col-8">
+                <h2>{{article.title}}</h2> <br>
+                <p>{{article.desc}}</p>
+                </div>
+                
+            </div>
+
+            <div class="col-md-4 ">
+                <h3 class="mt-2">Les articles en relations</h3 class="mt-2">
+                    <div class="row">                                     
+                        {% for art in aer %}
+                        {% if art.id != article.id %}
+                        <div class="col-md-6 mt-4">                           
+                            {% if art.image == "http://default" and article.id < 35 %}
+                            <img src="https://via.assets.so/game.jpg?w=1280&h=720
+                            " alt="" style="max-width: 150px;">
+                            {% elif art.image == "http://default" and article.id > 34 %}
+                            <img src="https://lipsum.app/random/1600x900"
+                            alt="Image de l'article" style="max-width: 150px;"/>
+                            {% else %}
+                            <img src="{{art.image.url}}" alt="" style="max-width: 150px; max-height: 400px;">
+                            {% endif %}
+                        </div>                          
+                        <div class="col-6 mt-4">
+                            <strong>{{art.title}}</strong> <br>
+                            {{art.desc|truncatewords:10}} 
+                        </div>
+                        {% endif %}
+                        {% endfor %}               
+                    </div>   
+                
+            </div>
+        </div>
+   </div>
+{% endblock %}
+
