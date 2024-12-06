@@ -32,4 +32,4 @@ def search_view(request):
     if query:
         results = Article.objects.filter(title__icontains=query)  # Recherche dans le champ "title"
 
-    return render(request, 'search_results.html', {'query': query, 'results': results})
+    return render(request, 'search.html', {'query': query, 'results': results})
