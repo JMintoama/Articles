@@ -8,7 +8,20 @@
     <ul>
       {% for result in results %}
         <li>
-          <a href="{% url 'article_detail' result.id %}">{{ result.title }}</a>
+          <a href="{% url 'detail' result.id %}">{{ result.title }}</a>
+          {% if result.image == "http://default" and  result.id < 35 %}
+          <img src="https://via.assets.so/game.jpg?w=1280&h=720
+          " alt=" " style="max-width: 1000px; max-height: 1000px; ">
+          {% elif result.image == "http://default" and result.id > 34 %}
+          <img src="https://lipsum.app/random/1600x900"
+          alt="Image de l'article" style="max-width: 1000px; max-height: 1000px;"/>
+          {% else %}
+          <img src="{{result.image.url}}" alt="" style="max-width: 1000px; max-height: 1000px; ">
+          {% endif %}
+          <div class="col-8">
+          <h2>{{result.title}}</h2> <br>
+          <p>{{result.desc}}</p>
+          </div>
         </li>
       {% endfor %}
     </ul>
