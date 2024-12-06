@@ -27,12 +27,14 @@
             >
           </li>
         </ul>
-        <form class="d-flex input-group w-auto">
+        <form class="d-flex input-group w-auto"  method="GET" action="{% url 'search' %}">
           <input
             type="search"
             class="form-control"
+            name="q"
             placeholder="Rechercher "
             aria-label="Search"
+            required
           />
           <button
             data-mdb-ripple-init

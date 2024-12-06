@@ -26,7 +26,7 @@ SECRET_KEY = 'django-insecure-+2xc73#7_4s_soc^_zb%aj_q8mnz#xar%(!)yf)x3ht#l+f(4e
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['127.0.0.1'] 
+ALLOWED_HOSTS = ['127.0.0.1','bb81-196-75-30-150.ngrok-free.app'] 
 
 
 # Application definition
@@ -132,9 +132,16 @@ STATIC_ROOT = BASE_DIR / "staticfiles"
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
+
 STORAGES = {
-    # ...
-    "staticfiles": {
-        "BACKEND": "whitenoise.storage.CompressedManifestStaticFilesStorage",
+    'default': {
+        'BACKEND': 'django.core.files.storage.FileSystemStorage',
+        'OPTIONS': {
+            'location': BASE_DIR / 'media',
+        },
+    },
+    'staticfiles': {
+        'BACKEND': 'django.contrib.staticfiles.storage.StaticFilesStorage',
     },
 }
+

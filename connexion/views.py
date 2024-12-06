@@ -24,4 +24,12 @@ def detail(request,id_article):
      category=article.category
      articles_en_relation=Article.objects.filter(category=category)[:5]
      return render(request, 'detail.html', {'article': article, 'aer':articles_en_relation})
-        
+
+def search_view(request):
+    query = request.GET.get('q')  # Récupérer la valeur de recherche
+    results = []  # Liste pour stocker les résultats
+
+    if query:
+        results = Article.objects.filter(title__icontains=query)  # Recherche dans le champ "title"
+
+    return render(request, 'search_results.html', {'query': query, 'results': results})
