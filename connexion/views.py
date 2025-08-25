@@ -1,10 +1,31 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect
+from django.http import HttpResponse, Http404
+from .models import Article
+from django.contrib.auth import authenticate, login, logout
+from django.contrib.auth.models import User
 
 # Create your views here.
-from django.shortcuts import render, redirect #charger la méthode redirect
-from django.http import HttpResponse
-from django.http import Http404
-from .models import Article
+
+def inscription(request):
+    if request.method == 'POST':
+        username = request.POST.get('username')
+        email = request.POST.get('email')
+        password = request.POST.get('password')
+
+        # Vérifier si l’utilisateur existe déjà
+        if User.objects.filter(username=username).exists():
+            return render(request, 'inscription.html', {'error': "Nom d'utilisateur déjà pris"})
+
+        # Créer un nouvel utilisateur
+        user = User.objects.create_user(username=username, email=email, password=password)
+        user.save()
+
+        # Connecter automatiquement l’utilisateur après inscription
+        login(request, user)
+        return redirect('Home')
+
+    return render(request, 'inscription.html')
+
 
 def connexion(request):
     texte="""<h1>Bienvenue sur la page de connexion!</h1>"""
@@ -13,12 +34,14 @@ def connexion(request):
          #Rediriger l'utilisateur vers la vue Home si info corrects
          return redirect('Home')
     return HttpResponse(texte)
-#    
+#  
 
+from django.contrib.auth.decorators import login_required
+@login_required
 def Home(request):
        list_articles = Article.objects.all()
        context = {'liste_articles': list_articles}
-       return render(request, 'home.html', context)
+       return render(request, 'home.html', context, {'user': request.user})
 def detail(request,id_article):
      article=Article.objects.get(id=id_article)
      category=article.category
