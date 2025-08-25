@@ -23,8 +23,5 @@ from django.conf.urls.static import static
 from connexion.views import Home, detail 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path("", views.Home, name="home"),
-    path('connexion/',include('connexion.urls')),
-    path('article/<int:id_article>',detail, name='detail'),
-    path('search/', views.search_view, name='search'),
+    path('',include('connexion.urls')),
 ]+static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
