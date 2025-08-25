@@ -6,6 +6,7 @@ from django.contrib.auth.models import User
 
 # Create your views here.
 
+# Vue d'inscription
 def inscription(request):
     if request.method == 'POST':
         username = request.POST.get('username')
@@ -20,28 +21,46 @@ def inscription(request):
         user = User.objects.create_user(username=username, email=email, password=password)
         user.save()
 
-        # Connecter automatiquement l’utilisateur après inscription
+        # Connecter automatiquement l’utilisateur
         login(request, user)
         return redirect('Home')
 
     return render(request, 'inscription.html')
 
 
+# Vue de connexion
 def connexion(request):
-    texte="""<h1>Bienvenue sur la page de connexion!</h1>"""
     if request.method == 'POST':
-         #vérifier les informations de connexions
-         #Rediriger l'utilisateur vers la vue Home si info corrects
-         return redirect('Home')
-    return HttpResponse(texte)
-#  
+        username = request.POST.get('username')
+        password = request.POST.get('password')
 
-from django.contrib.auth.decorators import login_required
-@login_required
-def Home(request):
+        user = authenticate(request, username=username, password=password)
+
+        if user is not None:
+            login(request, user)
+            return redirect('Home')
+        else:
+            return render(request, 'connexion.html', {'error': "Nom d'utilisateur ou mot de passe incorrect"})
+
+    return render(request, 'connexion.html')
+
+
+# Vue de déconnexion
+def deconnexion(request):
+    logout(request)
+    return redirect('connexion')
+
+
+# Vue d'accueil (protégée)
+@login_required(login_url='connexion')
+def home(request):
+    return render(request, 'home.html', {'user': request.user})
+
+def article(request):
        list_articles = Article.objects.all()
        context = {'liste_articles': list_articles}
-       return render(request, 'home.html', context, {'user': request.user})
+       return render(request, 'article.html', context, {'user': request.user})
+    
 def detail(request,id_article):
      article=Article.objects.get(id=id_article)
      category=article.category
